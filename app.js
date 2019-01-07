@@ -40,7 +40,7 @@ var app = express()
 // Serve URLs like /ftp/thing as public/ftp/thing
 // The express.static serves the file contents
 // The serveIndex is this module serving the directory
-app.use('/public', express.static('/public'), serveIndex('/public', {
+app.use('/', express.static('/'), serveIndex('public/', {
     'icons': true
 }))
 

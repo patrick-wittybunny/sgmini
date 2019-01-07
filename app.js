@@ -44,7 +44,7 @@ app.use('/', express.static('/'), serveIndex('public/', {
     'icons': true
 }))
 
-
+var static = require('node-static');
 var file = new static.Server('./public');
 
 require('http').createServer(function (request, response) {

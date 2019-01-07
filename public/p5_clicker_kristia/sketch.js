@@ -16,7 +16,7 @@ var percentResult = 0;
 var successSound, failSound, pushSound;
 
 function preload (){ 
-  img = loadImage("/assets/lava.png");  // Load the image
+  img = loadImage("assets/lava.png");  // Load the image
 
 }
 function setup() {
@@ -24,9 +24,9 @@ function setup() {
 
   createCanvas(600, 900);
 
-  successSound = loadSound('/assets/success.mp3');
-  failSound = loadSound('/assets/fail.mp3');
-  pushSound = loadSound('/assets/push.mp3');
+  successSound = loadSound('assets/success.mp3');
+  failSound = loadSound('assets/fail.mp3');
+  pushSound = loadSound('assets/push.mp3');
 
   // button = createButton('click me');
   // button.position(width * 0.45, height * 0.8);

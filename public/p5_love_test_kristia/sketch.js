@@ -15,15 +15,15 @@ var percent = 0;
 var percentResult = 0;
 
 function preload () {
-  img = loadImage("/assets/bg.png");  // Load the image
-  img2 = loadImage("/assets/heart.png");  // Load the image
-  img3 = loadImage("/assets/heartbg.png");  // Load the image
-  mask2 = loadImage("/assets/startBtn.png");  // Load the image
+  img = loadImage("assets/bg.png");  // Load the image
+  img2 = loadImage("assets/heart.png");  // Load the image
+  img3 = loadImage("assets/heartbg.png");  // Load the image
+  mask2 = loadImage("assets/startBtn.png");  // Load the image
 
 
 
-  successSound = loadSound('/assets/success.mp3');
-  failSound = loadSound('/assets/fail.mp3');
+  successSound = loadSound('assets/success.mp3');
+  failSound = loadSound('assets/fail.mp3');
 }
 
 function setup() {

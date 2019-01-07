@@ -1,0 +1,22 @@
+{
+  "name": "sgmini",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "app": "http-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/patrick-wittybunny/sgmini.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/patrick-wittybunny/sgmini/issues"
+  },
+  "homepage": "https://github.com/patrick-wittybunny/sgmini#readme",
+  "devDependencies": {
+    "http-server": "^0.11.1"
+  }
+}

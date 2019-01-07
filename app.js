@@ -45,4 +45,5 @@ app.use('/', express.static('/'), serveIndex('/', {
 }))
 
 // Listen
-app.listen(3000)
+// app.listen(3000)
+app.listen(proces.env.PORT);

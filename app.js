@@ -4,7 +4,7 @@ var serveIndex = require('serve-index')
 var serveStatic = require('serve-static')
 
 // Serve directory indexes for public/ftp folder (with icons)
-var index = serveIndex('public/', {
+var index = serveIndex('/', {
     'icons': true
 })
 

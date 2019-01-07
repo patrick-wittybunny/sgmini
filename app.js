@@ -32,17 +32,17 @@
 // server.listen(3000)
 
 
-var express = require('express')
-var serveIndex = require('serve-index')
+// var express = require('express')
+// var serveIndex = require('serve-index')
 
-var app = express()
+// var app = express()
 
-// Serve URLs like /ftp/thing as public/ftp/thing
-// The express.static serves the file contents
-// The serveIndex is this module serving the directory
-app.use('/', express.static('/'), serveIndex('public/', {
-    'icons': true
-}))
+// // Serve URLs like /ftp/thing as public/ftp/thing
+// // The express.static serves the file contents
+// // The serveIndex is this module serving the directory
+// app.use('/', express.static('/'), serveIndex('public/', {
+//     'icons': true
+// }))
 
 var static = require('node-static');
 var file = new static.Server('./public');
@@ -58,5 +58,5 @@ require('http').createServer(function (request, response) {
 
 // Listen
 // app.listen(3000)
-app.listen(process.env.PORT);
+// app.listen(process.env.PORT);
 

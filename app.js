@@ -21,7 +21,7 @@ var server = http.createServer(function onRequest(req, res) {
 })
 
 // Listen
-server.listen(process.env.port)
+server.listen(process.env.PORT)
 
 
 // var express = require('express')

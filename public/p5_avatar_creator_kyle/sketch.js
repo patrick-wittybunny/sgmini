@@ -78,6 +78,10 @@ function draw() {
 }
 
 function mousePressed() {
+  if (mouseX > width || mouseY > height) {
+    return;
+  }
+
   if ((mouseX < width / 3 || mouseX > width * 2 / 3) && (mouseY < height * 2 / 3)) {
     current.row = Math.floor(mouseY / icons[0][0].height);
     current.column = (mouseX < width / 3) ? 0 : 1;

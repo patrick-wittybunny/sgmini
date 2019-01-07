@@ -90,16 +90,15 @@
             canvas.style("z-index", "50");
 
             textFont("Helvetica");
-            textSize(windowWidth * 0.04);
+            textSize(windowHeight * 0.02);
 
             title_left = createButton("THIS O");
-            title_left.class("title");
             title_left.id("t-left");
             title_left.position(0, windowHeight * 0.15);
-            title_right = createButton("R THAT");
-            title_right.class("title");
+
+            title_right = createDiv("R THAT");
             title_right.id("t-right");
-            title_right.position(0, windowHeight * 0.15);
+            title_right.position(windowWidth * 0.5, windowHeight * 0.15);
 
             for(let i = 0; i < input_list.length; ++i) {
               btn_list_left[i] = createButton(input_list[i].a);
@@ -107,20 +106,20 @@
               btn_list_left[i].id("b-left");
               btn_list_left[i].mousePressed(function() {
                 textFont("Helvetica");
-                textSize(windowWidth * 0.04);
+                textSize(windowHeight * 0.02);
                 selectItem(i, 0);
               });
-              btn_list_left[i].position(windowWidth * 0.5 - textWidth(input_list[i].a) - textWidth("X") * 0.85,  windowHeight * 0.27 + windowHeight * 0.05 * i);
+              btn_list_left[i].position(windowWidth * 0.5 - textWidth(input_list[i].a) - textWidth("X") * 0.85, windowHeight * 0.2705 + windowHeight * 0.05 * i);
 
               btn_list_right[i] = createButton(input_list[i].b);
               btn_list_right[i].mousePressed(function() {
                 textFont("Helvetica");
-                textSize(windowWidth * 0.04);
+                textSize(windowHeight * 0.02);
                 selectItem(i, 1);
               });
               btn_list_right[i].class("button");
               btn_list_right[i].id("b-right");
-              btn_list_right[i].position(windowWidth * 0.5 + textWidth("X") * 0.55,  windowHeight * 0.2705 + windowHeight * 0.05 * i);
+              btn_list_right[i].position(windowWidth * 0.5 + textWidth("X") * 0.55, windowHeight * 0.2705 + windowHeight * 0.05 * i);
               btn_list_right[i].style("color", "#ffffff");
             }
 
@@ -152,9 +151,9 @@
               if(!slct_list_right[i]) {
                 slct_list_right[i] = createImg("assets/select.gif");
                 slct_list_right[i].attribute("src", "assets/select.gif?" + Math.random());
-                slct_list_right[i].position(windowWidth * 0.5 + textWidth("X") * 0.65, windowHeight * 0.29 + windowHeight * 0.05 * i - windowWidth * 0.03, textWidth(input_list[i].b) * 1.25, 100);
                 slct_list_right[i].style("width", textWidth(input_list[i].b) + "px");
                 slct_list_right[i].style("height", "80px")
+                slct_list_right[i].position(windowWidth * 0.5 + textWidth("X") * 0.65, windowHeight * 0.2705 + windowHeight * 0.05 * i);
               }
             }
             else {
@@ -165,9 +164,9 @@
               if(!slct_list_left[i]) {
                 slct_list_left[i] = createImg("assets/select.gif");
                 slct_list_left[i].attribute("src", "assets/select.gif?" + Math.random());
-                slct_list_left[i].position(windowWidth * 0.5 - textWidth(input_list[i].a) - textWidth("X") * 0.75, windowHeight * 0.29 + windowHeight * 0.05 * i - windowWidth * 0.03, textWidth(input_list[i].a) * 1.25, 100);
                 slct_list_left[i].style("width", textWidth(input_list[i].a) + "px");
                 slct_list_left[i].style("height", "80px");
+                slct_list_left[i].position(windowWidth * 0.5 - textWidth(input_list[i].a) - textWidth("X") * 0.75, windowHeight * 0.2705 + windowHeight * 0.05 * i);
               }
             }
           }
@@ -200,7 +199,7 @@
     left: 0px;
     width: 50%;
     height: 100%;
-    /* z-index: 1; */
+    z-index: 1;
   }
   /* select {
     border: none;
@@ -211,7 +210,7 @@
   } */
   .button {
     font-family: "Helvetica";
-    font-size: 4vw;
+    font-size: 2vh;
     line-height: 100px;
     outline: none;
     background: none;
@@ -220,29 +219,37 @@
   }
   #b-right {
     color: #ffffff;
-    text-shadow: 0.2vw 0.2vw #000000;
+    text-shadow: 0.1vh 0.1vh #000000;
   }
   #b-left {
     color: #000000;
-    text-shadow: 0.2vw 0.2vw #e74958;
+    text-shadow: 0.1vh 0.1vh #e74958;
   }
+
   #t-right {
-    padding-left: 33vw;
-    width: 100vw;
-    text-shadow: 0.5vw 0.5vw #fef5f6;
-  }
-  #t-left {
-    width: 70vw;
-    text-shadow: 0.5vw 0.5vw #e74958;
-  }
-  .title {
     font-family: "Arial";
-    font-size: 9vw;
+    font-size: 4.5vh;
     font-weight: 600;
     text-align: center;
     outline: none;
     background: none;
-    z-index: 100;
-    border: none;
+    border: 2px #000000;
+    z-index: 90;
+    text-align: left;
+    width: 50vw;
+    text-shadow: 0.5vh 0.5vh #fef5f6;
+  }
+  #t-left {
+    font-family: "Arial";
+    font-size: 4.5vh;
+    font-weight: 600;
+    text-align: center;
+    outline: none;
+    background: none;
+    border: 2px #000000;
+    z-index: 90;
+    text-align: right;
+    width: 50vw;
+    text-shadow: 0.5vh 0.5vh #e74958;
   }
 </style>

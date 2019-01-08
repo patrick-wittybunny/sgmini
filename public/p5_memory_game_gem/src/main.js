@@ -188,7 +188,7 @@ function Card(new_x, new_y, key_name) {
 	}
 
 	this.check = function () {
-		console.log(lives, this.in_play, this.key)
+		// console.log(lives, this.in_play, this.key)
 		if (lives > 0 && this.in_play && mouseX >= this.x && mouseX <= this.xx && mouseY >= this.y && 
 			mouseY <= this.yy ) {
 			if (wrong_guess) {

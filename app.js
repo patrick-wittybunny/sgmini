@@ -1,3 +1,5 @@
+process.env.NODE_ENV || require('dotenv').config();
+
 var finalhandler = require('finalhandler')
 var http = require('http')
 var serveIndex = require('serve-index')
@@ -22,7 +24,7 @@ var server = http.createServer(function onRequest(req, res) {
 
 // Listen
 server.listen(process.env.PORT)
-
+console.log(process.env.PORT);
 
 // var express = require('express')
 // var serveIndex = require('serve-index')

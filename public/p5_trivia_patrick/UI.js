@@ -9,6 +9,8 @@ function UI(parent) {
   this.correct = 0;
   this.correctSound = '';
   this.wrongSound = '';
+  this.score = 0;
+  this.errors = 0;
 
   this.preload = function() {
     this.correctSound = loadSound('correct.m4a');
@@ -43,6 +45,7 @@ function UI(parent) {
 
   }
 
+
   this.drawAnswersPanel = function(entry) {
 
     this.choices = ["True", "False"];
@@ -65,6 +68,9 @@ function UI(parent) {
       this.choicesUI[i].display();
     }
 
+
+ 
+
     // console.log(this.choices);
     // this.choices[0].fill(
   }
@@ -78,7 +84,13 @@ function UI(parent) {
     if (!this.isNext && this.answering) {
       for (var i = 0; i < this.choices.length; i++) {
         this.choicesUI[i].display();
+
       }
+
+      fill(255, 0, 0);
+      textAlign(LEFT);
+      text(`SCORE: ${this.score}`, 50, 300 + (50 * i) + 25);
+      text(`ERRORS: ${this.errors}`, 50, 300 + (50 * i) + 50);
     }
 
     if (this.isNext) {
@@ -157,11 +169,12 @@ function UI(parent) {
         me.correct++;
 				me.correctSound.play();
         answer.correct();
+        me.score++;
       } else {
-        console.log('here2');
 				me.wrongSound.play();
         answer.error();
         me.choicesUI[index].correct();
+        me.errors++;
       }
 
 

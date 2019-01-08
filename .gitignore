@@ -31,4 +31,4 @@ Temporary Items
 .apdisk
 
 # End of https://www.gitignore.io/api/macos
->>>>>>> 6f186f44bd54514138c8a35452765be5d947a9e0
+.env

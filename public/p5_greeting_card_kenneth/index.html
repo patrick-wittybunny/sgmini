@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Greetings Card</title>
+    <!-- <script src="libraries/jquery-3.3.1.slim.min.js"></script> -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <div class="wrapper-card">
+      <div class="card"></div>
+    </div>
+    <div class="wrapper-result">
+      <img class="result" src="assets/cards/0.jpg"/>
+    </div>
+    <script>
+      $(document).ready(function() {
+        for(var i = 0; i < 16; i++) {
+          $("<img/>")
+          .attr("id", i)
+          .attr("src", "assets/icons/" + i + ".jpg")
+          .appendTo($(".card"));
+        }
+
+        $(".card > img").on("click", function(event) {
+          $(".result").animate({
+            opacity: 0.25,
+          }, 100, function() {
+            $(".result").attr({
+              "src": "assets/cards/" + event.target.id + ".jpg"
+            });
+            $(".result").animate({
+              opacity: 1,
+            }, 100, function() {
+              //
+            });
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
+
+<style>
+  body {
+    padding: 0;
+    margin: 0;
+    overflow-y: hidden;
+  }
+  select {
+    border: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    -ms-appearance: none;
+  }
+  .wrapper-result {
+    background: #ffffff;
+    position: relative;
+    height: 100vh;
+  }
+  .result {
+    position: absolute;
+    background-image: url("assets/cards/0.jpg");
+    background-repeat: no-repeat;
+    background-position: top;
+    background-size: contain;
+    width: 100vw;
+    top: 0;
+  }
+  .wrapper-card {
+    margin: auto;
+    text-align: center;
+    position: relative;
+    width: 100vw;
+  }
+  .card {
+    padding: 0.5vw 0.5vw 0.5vw 0.5vw;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+  }
+  .card > img {
+    margin: 0.75vw;
+    max-height: 25vw;
+    cursor: pointer;
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    vertical-align: top;
+  }
+</style>

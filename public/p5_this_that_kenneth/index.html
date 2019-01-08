@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram</title>
+    <script src="libraries/p5.min.js"></script>
+    <script src="libraries/p5.dom.min.js"></script>
+    <script src="libraries/jquery-3.3.1.slim.min.js"></script>
+    <!-- <script src="http://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.6/p5.js"></script> -->
+    <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> -->
+  </head>
+  <body>
+    <div>
+      <!-- <div class="header-wrapper">
+        <div class="header">this or that</div>
+      </div>
+      <div class="list-wrapper"></div> -->
+
+      <div id="p_canvas"></div>
+      <script>
+        // $(document).ready(function() {
+        //   for(var i = 0; i < 10; i++) {
+        //     $("<div/>")
+        //     .attr("class", "list")
+        //     .html("this or that")
+        //     .appendTo($(".list-wrapper"));
+        //   }
+        // });
+
+        var p_canvas = function(p) {
+          var canvas;
+          var select;
+          var input_list = [
+            {
+              "a": "APPLE",
+              "b": "ORANGE"
+            },
+            {
+              "a": "SURFING",
+              "b": "HIKING"
+            },
+            {
+              "a": "MOM",
+              "b": "DAD"
+            },
+            {
+              "a": "HOTDOGS",
+              "b": "BACON"
+            },
+            {
+              "a": "NO INTERNET",
+              "b": "NO FRIENDS"
+            },
+            {
+              "a": "VIDEO GAMES",
+              "b": "SPORTS"
+            },
+            {
+              "a": "CAT",
+              "b": "DOG"
+            },
+            {
+              "a": "WATCHING",
+              "b": "READING"
+            },
+            {
+              "a": "LIGHTS ON",
+              "b": "LIGHTS OFF"
+            },
+            {
+              "a": "DANCING",
+              "b": "SINGING"
+            }
+          ];
+          var btn_list_left = [];
+          var btn_list_right = [];
+          var slct_list_left = [];
+          var slct_list_right = [];
+          preload = function() {
+
+          }
+
+          setup = function() {
+            background = createDiv();
+            background.class("background");
+
+            canvas = createCanvas(windowWidth, windowHeight);
+            canvas.position(0, 0);
+            canvas.style("z-index", "50");
+
+            textFont("Helvetica");
+            textSize(windowHeight * 0.02);
+
+            title_left = createButton("THIS O");
+            title_left.id("t-left");
+            title_left.position(0, windowHeight * 0.15);
+
+            title_right = createDiv("R THAT");
+            title_right.id("t-right");
+            title_right.position(windowWidth * 0.5, windowHeight * 0.15);
+
+            for(let i = 0; i < input_list.length; ++i) {
+              btn_list_left[i] = createButton(input_list[i].a);
+              btn_list_left[i].class("button");
+              btn_list_left[i].id("b-left");
+              btn_list_left[i].mousePressed(function() {
+                textFont("Helvetica");
+                textSize(windowHeight * 0.02);
+                selectItem(i, 0);
+              });
+              btn_list_left[i].position(windowWidth * 0.5 - textWidth(input_list[i].a) - textWidth("X") * 0.85, windowHeight * 0.2705 + windowHeight * 0.05 * i);
+
+              btn_list_right[i] = createButton(input_list[i].b);
+              btn_list_right[i].mousePressed(function() {
+                textFont("Helvetica");
+                textSize(windowHeight * 0.02);
+                selectItem(i, 1);
+              });
+              btn_list_right[i].class("button");
+              btn_list_right[i].id("b-right");
+              btn_list_right[i].position(windowWidth * 0.5 + textWidth("X") * 0.55, windowHeight * 0.2705 + windowHeight * 0.05 * i);
+              btn_list_right[i].style("color", "#ffffff");
+            }
+
+
+            // recall();
+          }
+
+          windowResized = function() {
+            resizeCanvas(windowWidth, windowHeight);
+            // recall();
+          }
+
+          recall = function() {
+            // fill(0);
+            // stroke(255, 255, 255, 0);
+            //
+            // textAlign(CENTER);
+            // textFont("Arial");
+            // textStyle(BOLD);
+            // textSize(windowWidth * 0.1);
+          }
+
+          selectItem = function(i, choice) {
+            if(choice) {
+              if(slct_list_left[i]) {
+                slct_list_left[i].remove();
+                slct_list_left[i] = null;
+              }
+              if(!slct_list_right[i]) {
+                slct_list_right[i] = createImg("assets/select.gif");
+                slct_list_right[i].attribute("src", "assets/select.gif?" + Math.random());
+                slct_list_right[i].style("width", textWidth(input_list[i].b) + "px");
+                slct_list_right[i].style("height", "80px")
+                slct_list_right[i].position(windowWidth * 0.5 + textWidth("X") * 0.65, windowHeight * 0.2705 + windowHeight * 0.05 * i);
+              }
+            }
+            else {
+              if(slct_list_right[i]) {
+                slct_list_right[i].remove();
+                slct_list_right[i] = null;
+              }
+              if(!slct_list_left[i]) {
+                slct_list_left[i] = createImg("assets/select.gif");
+                slct_list_left[i].attribute("src", "assets/select.gif?" + Math.random());
+                slct_list_left[i].style("width", textWidth(input_list[i].a) + "px");
+                slct_list_left[i].style("height", "80px");
+                slct_list_left[i].position(windowWidth * 0.5 - textWidth(input_list[i].a) - textWidth("X") * 0.75, windowHeight * 0.2705 + windowHeight * 0.05 * i);
+              }
+            }
+          }
+        }
+        // var "container" = document.createElement("div");
+        // window.document.getElementsByTagName("body")[0].appendChild("container");
+        new p5(p_canvas, "p_canvas");
+      </script>
+    </div>
+  </body>
+</html>
+<style>
+  body {
+    /* background: #f9fae9; */
+    background: #e74958;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -webkit-touch-callout: none;
+    -o-user-select: none;
+    -moz-user-select: none;
+  }
+  .background {
+    position: absolute;
+    background: #fef5f6;
+    top: 0px;
+    left: 0px;
+    width: 50%;
+    height: 100%;
+  }
+  /* select {
+    border: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    -ms-appearance: none;
+  } */
+  .button {
+    font-family: "Helvetica";
+    font-size: 2vh;
+    line-height: 100px;
+    outline: none;
+    background: none;
+    z-index: 999;
+    border: none;
+  }
+  #b-right {
+    color: #ffffff;
+    text-shadow: 0.1vh 0.1vh #000000;
+  }
+  #b-left {
+    color: #000000;
+    text-shadow: 0.1vh 0.1vh #e74958;
+  }
+
+  #t-right {
+    font-family: "Arial";
+    font-size: 4.5vh;
+    font-weight: 600;
+    text-align: center;
+    outline: none;
+    background: none;
+    border: 2px #000000;
+    z-index: 90;
+    text-align: left;
+    width: 50vw;
+    text-shadow: 0.5vh 0.5vh #fef5f6;
+  }
+  #t-left {
+    font-family: "Arial";
+    font-size: 4.5vh;
+    font-weight: 600;
+    text-align: center;
+    outline: none;
+    background: none;
+    border: 2px #000000;
+    z-index: 90;
+    text-align: right;
+    width: 50vw;
+    text-shadow: 0.5vh 0.5vh #e74958;
+  }
+</style>

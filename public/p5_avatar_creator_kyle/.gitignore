@@ -1,6 +1,5 @@
-
-# Created by https://www.gitignore.io/api/macos
-# Edit at https://www.gitignore.io/?templates=macos
+# Created by https://www.gitignore.io/api/macos,processing
+# Edit at https://www.gitignore.io/?templates=macos,processing
 
 ### macOS ###
 # General
@@ -30,5 +29,14 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-# End of https://www.gitignore.io/api/macos
->>>>>>> 6f186f44bd54514138c8a35452765be5d947a9e0
+### Processing ###
+applet
+application.linux-arm64
+application.linux-armv6hf
+application.linux32
+application.linux64
+application.windows32
+application.windows64
+application.macosx
+
+# End of https://www.gitignore.io/api/macos,processing

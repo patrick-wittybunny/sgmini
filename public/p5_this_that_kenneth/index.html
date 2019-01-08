@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Instagram Story</title>
+    <title>Instagram</title>
     <script src="libraries/p5.min.js"></script>
     <script src="libraries/p5.dom.min.js"></script>
   </head>
@@ -125,20 +125,20 @@
           selectItem = function(i, choice) {
             if(choice) {
               if(document.getElementById("1" + i).style.visibility == "hidden") {
-                slct_right[i].attribute("src", "assets/select.gif?" + Math.random());
                 slct_right[i].style("visibility", "visible");
               }
               if(document.getElementById("0" + i).style.visibility == "visible") {
                 slct_left[i].style("visibility", "hidden");
+                slct_left[i].attribute("src", "assets/select.gif?" + Math.random());
               }
             }
             else {
               if(document.getElementById("0" + i).style.visibility == "hidden") {
-                slct_left[i].attribute("src", "assets/select.gif?" + Math.random());
                 slct_left[i].style("visibility", "visible");
               }
               if(document.getElementById("1" + i).style.visibility == "visible") {
                 slct_right[i].style("visibility", "hidden");
+                slct_right[i].attribute("src", "assets/select.gif?" + Math.random());
               }
             }
           }

@@ -95,8 +95,8 @@ Minesweeper.prototype.show = function(){
   var visited = 0;
   for(var y = 0; y < this.currentMode.yTiles; y++){
     for(var x = 0; x < this.currentMode.xTiles; x++){
-      if(this.playState[x][y].visited){
-        if(this.playState[x][y].mine){
+      if(this.playState[x][y].mine){
+        if(this.playState[x][y].visited || this.gameState == -1){
           image(
             images.mine, 
             -0.5 * playWidth + tileWidth * x, -0.5 * playHeight + tileHeight * y,
@@ -105,6 +105,18 @@ Minesweeper.prototype.show = function(){
           )
         }
         else{
+          push();
+          fill(100);
+          rect(
+            -0.5 * playWidth + tileWidth * x, -0.5 * playHeight + tileHeight * y,
+            tileWidth, tileHeight
+          );
+          pop();
+        }
+      }
+      else{
+        if(this.playState[x][y].visited){
+          visited++;
           var nearbyMines = this.getNearbyMines(x, y);
           push();
           fill(255);
@@ -126,22 +138,23 @@ Minesweeper.prototype.show = function(){
             pop();
           }
         }
-        visited++;
-      }
-      else{
-        push();
-        // var myTint = this.playState[x][y].mine? 0: 100;
-        // fill(myTint);
-        fill(100)
-        rect(
-          -0.5 * playWidth + tileWidth * x, -0.5 * playHeight + tileHeight * y,
-          tileWidth, tileHeight
-        );
-        pop();
+        else{
+          push();
+          fill(100)
+          rect(
+            -0.5 * playWidth + tileWidth * x, -0.5 * playHeight + tileHeight * y,
+            tileWidth, tileHeight
+          );
+          pop();
+        }
       }
     }
   }
-
+  push();
+  rectMode(CENTER);
+  noFill();
+  rect(0, 0, this.currentMode.playWidth, this.currentMode.playHeight);
+  pop();
   if(visited >= this.currentMode.xTiles * this.currentMode.yTiles - this.currentMode.mines){
     this.gameState = 1;
   }

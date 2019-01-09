@@ -3,164 +3,47 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Instagram</title>
-    <script src="libraries/p5.min.js"></script>
-    <script src="libraries/p5.dom.min.js"></script>
+    <title>Greetings Card</title>
+    <!-- <script src="libraries/jquery-3.3.1.slim.min.js"></script> -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   </head>
   <body>
-    <div>
-      <div id="p_canvas"></div>
-      <script>
-        var p_canvas = function(p) {
-          var canvas;
-          var item_list = [
-            {
-              "a": "APPLE",
-              "b": "ORANGE"
-            },
-            {
-              "a": "PIE",
-              "b": "CAKE"
-            },
-            {
-              "a": "FRUITS",
-              "b": "VEGETABLES"
-            },
-            {
-              "a": "HOTDOGS",
-              "b": "BURGERS"
-            },
-            {
-              "a": "CHOCOLATES",
-              "b": "CANDIES"
-            },
-            {
-              "a": "PIZZA",
-              "b": "PASTA"
-            },
-            {
-              "a": "SUSHI",
-              "b": "SAMGYUPSAL"
-            },
-            {
-              "a": "COFFEE",
-              "b": "TEA"
-            },
-            {
-              "a": "KETCHUP",
-              "b": "MAYO"
-            },
-            {
-              "a": "COKE",
-              "b": "PEPSI"
-            }
-          ];
-          var btn_left = [];
-          var btn_right = [];
-          var slct_left = [];
-          var slct_right = [];
-          var div_left = [];
-          var div_right = [];
-          setup = function() {
-            l_area = createDiv();
-            l_area.class("l-area area");
-            l_area.position(0, 0);
-
-            r_area = createDiv();
-            r_area.class("r-area area");
-            r_area.position(300, 0);
-
-            l_item = createDiv();
-            l_item.class("l-item item");
-            l_item.position(0, 0);
-
-            r_item = createDiv();
-            r_item.class("r-item item");
-            r_item.position(300, 0);
-
-
-            l_title = createP("THIS O");
-            l_title.class("l-title title");
-            l_title.parent(l_area);
-
-            r_title = createP("R THAT");
-            r_title.class("r-title title");
-            r_title.parent(r_area);
-
-            textFont("Helvetica");
-            textSize(30);
-
-            for(let i = 0; i < item_list.length; i++) {
-              div_left[i] = createDiv();
-              div_left[i].class("l-divider divider");
-              div_left[i].style("width", textWidth(item_list[i].a) * 1.2 + "px");
-              div_left[i].parent(l_item);
-
-              btn_left[i] = createButton(item_list[i].a);
-              btn_left[i].class("l-button button");
-              btn_left[i].mousePressed(function() {
-                selectItem(i, 0);
-              });
-              btn_left[i].parent(div_left[i]);
-
-              slct_left[i] = createImg("assets/select.gif");
-              slct_left[i].attribute("src", "assets/select.gif?" + Math.random());
-              slct_left[i].id("0" + i);
-              slct_left[i].class("select");
-              slct_left[i].style("width", btn_left[i].width * 2.5 + "px");
-              slct_left[i].style("visibility", "hidden");
-              slct_left[i].parent(div_left[i]);
-
-              div_right[i] = createDiv();
-              div_right[i].class("r-divider divider");
-              div_right[i].style("width", textWidth(item_list[i].b) * 1.2 + "px");
-              div_right[i].parent(r_item);
-
-
-
-              btn_right[i] = createButton(item_list[i].b);
-              btn_right[i].class("r-button button");
-              btn_right[i].mousePressed(function() {
-                selectItem(i, 1);
-              });
-              btn_right[i].parent(div_right[i]);
-
-              slct_right[i] = createImg("assets/select.gif");
-              slct_right[i].attribute("src", "assets/select.gif?" + Math.random());
-              slct_right[i].id("1" + i);
-              slct_right[i].class("select");
-              slct_right[i].style("width", btn_right[i].width * 2.5 + "px");
-              slct_right[i].style("visibility", "hidden");
-              slct_right[i].parent(div_right[i]);
-            }
-          }
-
-          selectItem = function(i, choice) {
-            if(choice) {
-              if(document.getElementById("1" + i).style.visibility == "hidden") {
-                slct_right[i].style("visibility", "visible");
-              }
-              if(document.getElementById("0" + i).style.visibility == "visible") {
-                slct_left[i].style("visibility", "hidden");
-                slct_left[i].attribute("src", "assets/select.gif?" + Math.random());
-              }
-            }
-            else {
-              if(document.getElementById("0" + i).style.visibility == "hidden") {
-                slct_left[i].style("visibility", "visible");
-              }
-              if(document.getElementById("1" + i).style.visibility == "visible") {
-                slct_right[i].style("visibility", "hidden");
-                slct_right[i].attribute("src", "assets/select.gif?" + Math.random());
-              }
-            }
-          }
-        }
-        new p5(p_canvas, "p_canvas");
-      </script>
+    <div class="greeting">
+      <div class="wrapper-card">
+        <div class="card"></div>
+      </div>
+      <div class="wrapper-result">
+        <img class="result" src="assets/cards/0.jpg"/>
+        <input type="text" value="" placeholder="insert name" readonly="true" class="message" ondblclick="this.readOnly='';">
+      </div>
     </div>
+    <script>
+      $(document).ready(function() {
+        for(var i = 0; i < 16; i++) {
+          $("<img/>")
+          .attr("id", i)
+          .attr("src", "assets/icons/" + i + ".jpg")
+          .appendTo($(".card"));
+        }
+        $(".card > img").on("click", function(event) {
+          $(".result").animate({
+            opacity: 0.25,
+          }, 100, function() {
+            $(".result").attr({
+              "src": "assets/cards/" + event.target.id + ".jpg"
+            });
+            $(".result").animate({
+              opacity: 1,
+            }, 100, function() {
+              //
+            });
+          });
+        });
+      });
+    </script>
   </body>
 </html>
+
 <style>
   body {
     padding: 0;
@@ -174,92 +57,71 @@
     -o-user-select: none;
     -moz-user-select: none;
   }
-
-  .divider {
-    position: relative;
-    display: flex;
-    width: 300px;
-    height: 55px;
-  }
-
-  .l-divider {
-    margin-right: 20px;
-    align-items: flex-start;
-    justify-content: flex-end;
-    float: right;
-    clear: right;
-  }
-
-  .r-divider {
-    margin-left: 20px;
-    align-items: flex-start;
-    justify-content: flex-start;
-    float: left;
-    clear: left;
-  }
-
-  .area {
-    width: 300px;
+  .greeting {
+    width: 600px;
     height: 900px;
   }
-
-  .l-area {
-    background: #fef5f6;
+  .wrapper-result {
+    background: #ffffff;
+    position: relative;
   }
-
-  .r-area {
-    background: #e74958;
-  }
-
-  .title {
-    padding-top: 20px;
-    font-family: "Arial";
-    font-size: 70px;
-    font-weight: 600;
-  }
-
-  .l-title {
-    padding-right: 0px;
-    float: right;
-    clear: right;
-    text-shadow: 5px 5px #e74958;
-  }
-
-  .r-title {
-    padding-left: 0px;
-    float: left;
-    clear: left;
-    text-shadow: 5px 5px #fef5f6;
-  }
-
-  .button {
+  .result {
     position: absolute;
+    background-image: url("assets/cards/0.jpg");
+    background-repeat: no-repeat;
+    background-position: top;
+    background-size: contain;
+    width: 600px;
+    top: 0;
+  }
+  .wrapper-card {
+    margin-left: 0px;
+    text-align: center;
+    position: relative;
+    width: 600px;
+  }
+  .card {
+    padding: 5px 5px 5px 5px;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+  }
+  .card > img {
+    margin: 5px;
+    max-height: 100px;
+    cursor: pointer;
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    vertical-align: top;
+    /* border: 2px solid black; */
+    border-radius: 50px;
+  }
+  .message {
+    color: #ffffff;
+    margin-top: 225px;
+    margin-left: 75px;
+    position: absolute;
+    width: 525px;
     font-family: "Helvetica";
-    font-size: 30px;
+    font-size: 25px;
     line-height: 50.5px;
     outline: none;
     background: none;
-    /* z-index: 999; */
     border: none;
   }
-
-  .l-button {
-    color: #000000;
-    text-shadow: 1px 1px #e74958;
-  }
-
-  .r-button {
+  input::placeholder {
     color: #ffffff;
-    text-shadow: 1px 1px #000000;
+    font-style: italic;
+    opacity: 1;
   }
-
-  .item {
-    width: 300px;
-    height: 900px;
-    padding-top: 248px;
+  input:focus,
+  select:focus,
+  textarea:focus,
+  button:focus {
+    outline: none;
   }
-
-  .select {
-    height: 54px;
+  .disable-dbl-tap-zoom {
+    touch-action: manipulation;
   }
 </style>

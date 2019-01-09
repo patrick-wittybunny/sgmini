@@ -29,17 +29,16 @@ function preload () {
 function setup() {
   createCanvas(600, 900);
 
-/*  button = createButton('click me');
-  button.position(width * 0.5, height * 0.9);
-  button.mousePressed(clickMe);*/
-
   inp = createInput('');
   inp.position(width * 0.02, height * 0.28);
   inp.input(myInputEvent);
+  inp.mousePressed(clearInput1);
 
   inp2 = createInput('');
   inp2.position(width * 0.535, height * 0.28);
   inp2.input(myInputEvent);
+  inp2.mousePressed(clearInput2);
+
 
   inp.size(260, 40);
   inp2.size(260, 40);
@@ -50,44 +49,15 @@ function setup() {
 
   textAlign(CENTER, CENTER);
   textSize(50);
+}
 
-  // submitButton = createButton('submit');
-  // submitButton.position(width * 0.45, height * 0.4);
-  // submitButton.mousePressed(submitNames);  
-
-
-  // fill(255, 204, 0);
+function customEvent() {
+  console.log("adasdasasd");
 }
 
 function draw() {
-  // Displays the image at its actual size at point (0,0)
 
-/*  image(img, 0, 0);
-  // Displays the image at point (0, height/2) at half size
-  image(img, 0, height/2, img.width/2, img.height/2);
-
-  // console.log("hello2");
-
-  background(r, g, b);
-
-  textAlign(CENTER, CENTER);
-  textSize(50);
-
-  if(!started){
-  	text("CLICK TO START", width/2, height * 0.2);
-  }
-  text(timer, width/2, height/2);
-  text(clicks, width/2, height * 0.8);
-  
-  // while (timer > 0) {  // this doesn't work because it's all happening at the same time
-  //   timer --;
-  // }
-  
-  // frameCount --> this keeps track of the number of times the program has gone throught the code, 60 = 1 second
-  // % ---> this is the Modulo operator, it divides numbers and evaluates to the remainder: 17 % 5 evaluates to 2 remainder
-  // this can be used to determine if the number on the left is divisible by the number on the right
-  */
-    background(img);
+  background(img);
 
 
   image(img3, width/6, height * 0.9 - img3.height );
@@ -101,7 +71,6 @@ function draw() {
 
   }
   if (timer == 0) {
-    // text("GAME OVER", width/2, height*0.7);
     drawHeart();
 
     if(submitted && rectPos != 0 && percentResult != 0){
@@ -119,21 +88,8 @@ function draw() {
         } 	
     }
 
-    // myRect = rect(0, rectPos, 55, height);
-
-
     text(percent + "%", width * 0.47, height * 0.7);
   }
-
-
-
-
-
-  // image(img, 0, 0, width, height);
-
-  // image(img2, width/6, height/2);
-
-  // image(img2.get(0, img2.height/2, img2.width, img2.height/2), width/6, height/2 + img2.height/2);
 
 }
 
@@ -162,58 +118,17 @@ function drawHeart(){
 }
 
 
-// When the user clicks the mouse
-function clickMe() {
-  // Check if mouse is inside the circle
-  // var d = dist(mouseX, mouseY, 360, 200);
-  // if (d < 100) {
-    // Pick new random color values
-    // r = random(255);
-    // g = random(255);
-    // b = random(255);
-  // }
-
-  if(!started){
-  	started = true;
-  }
-
-  if(started && timer > 0){
-  	clicks++;
-  	r = random(255);
-    g = random(255);
-   	b = random(255);
-  }
-
-  console.log("hello");
-}
-
-function restart() {
-	started = false;
-    	timer = 5;
-    	clicks = 0;
-
-    	button.show();
-    	restartButton.hide();
-}
-
-function createRestartButton() {
-
-	if(!restartButton){
-		button.hide();
-
-	    	restartButton = createButton('restart');
-	  	restartButton.position(width * 0.8, height * 0.8);
-	  	restartButton.mousePressed(restart); 
-	}
-	else{
-		restartButton.show();
-	}
-}
-
 function myInputEvent() {
-  // console.log('you are typing: ', this.value());
     this.style('color', 'black');
 
+}
+
+function clearInput1() {
+    inp.value('');
+}
+
+function clearInput2() {
+    inp2.value('');
 }
 
 function submitNames() {
@@ -243,15 +158,3 @@ function submitNames() {
   }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-

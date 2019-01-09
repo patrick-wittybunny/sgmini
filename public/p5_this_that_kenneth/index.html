@@ -59,8 +59,9 @@
           var btn_right = [];
           var slct_left = [];
           var slct_right = [];
+          var div_left = [];
+          var div_right = [];
           setup = function() {
-
             l_area = createDiv();
             l_area.class("l-area area");
             l_area.position(0, 0);
@@ -87,38 +88,50 @@
             r_title.parent(r_area);
 
             textFont("Helvetica");
-            textSize(40);
+            textSize(30);
 
             for(let i = 0; i < item_list.length; i++) {
+              div_left[i] = createDiv();
+              div_left[i].class("l-divider divider");
+              div_left[i].style("width", textWidth(item_list[i].a) * 1.2 + "px");
+              div_left[i].parent(l_item);
+
               btn_left[i] = createButton(item_list[i].a);
               btn_left[i].class("l-button button");
               btn_left[i].mousePressed(function() {
                 selectItem(i, 0);
               });
-              btn_left[i].parent(l_item);
+              btn_left[i].parent(div_left[i]);
+
+              slct_left[i] = createImg("assets/select.gif");
+              slct_left[i].attribute("src", "assets/select.gif?" + Math.random());
+              slct_left[i].id("0" + i);
+              slct_left[i].class("select");
+              slct_left[i].style("width", btn_left[i].width * 2.5 + "px");
+              slct_left[i].style("visibility", "hidden");
+              slct_left[i].parent(div_left[i]);
+
+              div_right[i] = createDiv();
+              div_right[i].class("r-divider divider");
+              div_right[i].style("width", textWidth(item_list[i].b) * 1.2 + "px");
+              div_right[i].parent(r_item);
+
+
 
               btn_right[i] = createButton(item_list[i].b);
               btn_right[i].class("r-button button");
               btn_right[i].mousePressed(function() {
                 selectItem(i, 1);
               });
-              btn_right[i].parent(r_item);
-
-              slct_left[i] = createImg("assets/select.gif");
-              slct_left[i].attribute("src", "assets/select.gif?" + Math.random());
-              slct_left[i].id("0" + i);
-              slct_left[i].class("l-select select");
-              slct_left[i].style("width", textWidth(item_list[i].a) + "px");
-              slct_left[i].style("visibility", "hidden");
-              slct_left[i].parent(l_area);
+              btn_right[i].parent(div_right[i]);
 
               slct_right[i] = createImg("assets/select.gif");
               slct_right[i].attribute("src", "assets/select.gif?" + Math.random());
               slct_right[i].id("1" + i);
-              slct_right[i].class("r-select select");
-              slct_right[i].style("width", textWidth(item_list[i].b) + "px");
+              slct_right[i].class("select");
+              slct_right[i].style("width", btn_right[i].width * 2.5 + "px");
               slct_right[i].style("visibility", "hidden");
-              slct_right[i].parent(r_area);
+              slct_right[i].parent(div_right[i]);
             }
           }
 
@@ -162,6 +175,29 @@
     -moz-user-select: none;
   }
 
+  .divider {
+    position: relative;
+    display: flex;
+    width: 300px;
+    height: 55px;
+  }
+
+  .l-divider {
+    margin-right: 20px;
+    align-items: flex-start;
+    justify-content: flex-end;
+    float: right;
+    clear: right;
+  }
+
+  .r-divider {
+    margin-left: 20px;
+    align-items: flex-start;
+    justify-content: flex-start;
+    float: left;
+    clear: left;
+  }
+
   .area {
     width: 300px;
     height: 900px;
@@ -197,6 +233,7 @@
   }
 
   .button {
+    position: absolute;
     font-family: "Helvetica";
     font-size: 30px;
     line-height: 50.5px;
@@ -207,17 +244,11 @@
   }
 
   .l-button {
-    padding-right: 20px;
-    float: right;
-    clear: right;
     color: #000000;
     text-shadow: 1px 1px #e74958;
   }
 
   .r-button {
-    padding-left: 20px;
-    float: left;
-    clear: left;
     color: #ffffff;
     text-shadow: 1px 1px #000000;
   }
@@ -230,15 +261,5 @@
 
   .select {
     height: 54px;
-  }
-
-  .l-select {
-    float: right;
-    clear: right;
-  }
-
-  .r-select {
-    float: left;
-    clear: left;
   }
 </style>

@@ -11,6 +11,9 @@ function preload() {
 }
 
 function setup() {
+  // console.log(windowWidth, windowHeight)
+  // console.log(window.innerWidth, window.innerHeight)
+  // console.log(window.outerWidth, window.outerHeight)
   createCanvas(600, 900);
   game = new Minesweeper();
   objects.push(game);
@@ -89,6 +92,15 @@ Minesweeper.prototype.show = function(){
   var tileWidth = playWidth/this.currentMode.xTiles;
   var tileHeight = playHeight/this.currentMode.yTiles;
 
+  push();
+  textSize(32);
+  fill(0);
+  textAlign(CENTER, CENTER);
+  text(
+    window.innerWidth + ' ' + window.innerHeight,
+    0.5 * width, 100)
+
+  pop();
   push();
   translate(0.5 * width, 0.5 * height);
 

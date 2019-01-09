@@ -32,3 +32,7 @@ Temporary Items
 
 # End of https://www.gitignore.io/api/macos
 .env
+
+# Kyle's files
+public/p5_avatar_creator_kyle/.*
+public/p5_flip_card_kyle/.*

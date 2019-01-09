@@ -10,9 +10,37 @@ var pRotationXY = 0;
 var BG_COLOR = 255;
 var theta = {};
 var dTheta = 0;
+var scaleXY = 0;
+var triangleRotation = 0;
+
+var answer = [
+    "It is certain.",
+    "It is decidedly so.",
+    "Without a doubt.",
+    "Yes - definitely.",
+    "You may rely on it.",
+    "As I see it, yes.",
+    "Most likely.",
+    "Outlook good.",
+    "Yes.",
+    "Signs point to yes.",
+    "Reply hazy, try again.",
+    "Ask again later.",
+    "Better not tell you now.",
+    "Cannot predict now.",
+    "Concentrate and ask again.",
+    "Don't count on it.",
+    "My reply is no.",
+    "My sources say no.",
+    "Outlook not so good.",
+    "Very doubtful.",
+];
+var answerIndex = (Math.random() * answer.length) | 0;
 
 function preload() {
     bg = loadImage("assets/bg.jpg");
+    triangle = loadImage("assets/triangle.jpg");
+    trianglePng = loadImage("assets/triangle.png");
     texture_8ball = loadImage("assets/8ball.jpg");
     mechanical = loadFont("assets/mechanical.otf");
 }
@@ -20,6 +48,7 @@ function preload() {
 function setup() {
     createCanvas(600, 900, WEBGL);
     mouseRate = HALF_PI / radius;
+    triangleRotation = -0.125 * HALF_PI + Math.random() * 0.25 * HALF_PI;
     setShakeThreshold(50);
 }
 
@@ -46,7 +75,6 @@ function draw(){
                 rotateX(theta.x);
                 rotateY(theta.y);
                 let mouseDrag = {sum: theta.x + theta.y + HALF_PI, absSum: Math.abs(theta.x) + Math.abs(theta.y + HALF_PI)};
-                // console.log(mouseDrag.sum, mouseDrag.absSum);
                 if (mouseDrag.absSum > 0.71 * HALF_PI && mouseDrag.sum * pRotationXY <= 0) {
                     deviceShaken(true);
                     pRotationXY = mouseDrag.sum < 0 ? -1 : 1;
@@ -54,7 +82,6 @@ function draw(){
             }
         }
         else if (Math.abs(theta.x - PI) > Math.abs(dTheta.x)){
-            console.log(Math.abs(theta.x - PI) > Math.abs(dTheta.x));
             rotateX(theta.x);
             rotateY(theta.y);
             theta.x += dTheta.x;
@@ -70,17 +97,25 @@ function draw(){
         sphere(radius);
     pop();
 
-    //lighting
-    pointLight(255, 255, 255, 0, 0, 2 * (total+1) * radius);
-    pointLight(255, 255, 255, 0, 0, 2 * (total+1) * radius);
-    pointLight(255, 255, 255, 0, 0, 2 * (total+1) * radius);
-    pointLight(255, 255, 255, 0, 0, 2 * (total+1) * radius);
+    if (total >= 3 && Math.abs(theta.x - PI) <= Math.abs(dTheta.x)) {
+        push();
+            translate(0, 0, 2 * radius);
+            rotateZ(triangleRotation);
+            fill(123, 12, 42, 128);
+            texture(trianglePng);
+            plane(108 * scaleXY, 94 * scaleXY);
+            if (scaleXY < 1) {
+                scaleXY += 1/60;
+                // dRotation +=
+            }
+        pop();
+    }
 
-    // display variables
-    textFont(mechanical);
-    fill(255);
-    text("count: " + count, -0.4 * width, -0.4 * height);
-    text("total: " + total, -0.4 * width, -0.38 * height);
+    //lighting
+    pointLight(255, 255, 255, 0, 0, 2 * (1 + 4 * scaleXY) * radius);
+    pointLight(255, 255, 255, 0, 0, 2 * (1 + 4 * scaleXY) * radius);
+    pointLight(255, 255, 255, 0, 0, 2 * (1 + 4 * scaleXY) * radius);
+    pointLight(255, 255, 255, 0, 0, 2 * (1 + 4 * scaleXY) * radius);
 }
 
 function deviceShaken(isMouse){

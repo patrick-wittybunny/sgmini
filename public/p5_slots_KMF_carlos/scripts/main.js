@@ -52,8 +52,9 @@ slotMachine.prototype.update = function(){
   if(this.spinning){
     if(millis() >= this.stopAt){
       this.spinning = false;
-      this.lever.pullable = true;
-      // noLoop();
+      if(this.lever.pullable){
+        noLoop();
+      }
     }
   }
   else{
@@ -151,8 +152,16 @@ slotMachine.prototype.spinReels = function(){
 }
 
 slotMachine.prototype.mousePressed = function(){
-
+  if(this.spinning) return;
+  this.lever.mousePressed();
 }
+slotMachine.prototype.mouseDragged = function(){
+  this.lever.mouseDragged();
+}
+slotMachine.prototype.mouseReleased = function(){
+  this.lever.mouseReleased();
+}
+
 
 function reel(direction){
   if(direction === undefined) direction = 1;
@@ -274,7 +283,7 @@ function lever(){
   this.y = 0;
   this.height = 200;
   this.width = 100;
-  this.retractSpeed = -5;
+  this.retractSpeed = -10;
   this.pullSpeed = -this.retractSpeed;
   this.updateValues();
 }
@@ -291,20 +300,17 @@ lever.prototype.updateValues = function(){
 }
 
 lever.prototype.update = function(){
-  if(this.dCrank > 0){
-    if(this.crankAngle >= 99){
-      this.pulled = true;
-      this.dCrank = this.retractSpeed;
-    }
-  }
-  else if(this.dCrank <= 0){
+  if(this.dCrank < 0){
+    this.crankAngle += this.dCrank;
     if(this.crankAngle <= 0){
-      if(this.pullable){
-        this.dCrank = this.pullSpeed;
+      this.crankAngle = 0;
+      this.dCrank = 0;
+      this.pullable = true;
+      if(this.weakPull){
+        noLoop();
       }
     }
   }
-  this.crankAngle = min(max(this.crankAngle + this.dCrank, 0), 99);
 }
 
 lever.prototype.show = function(){
@@ -323,26 +329,58 @@ lever.prototype.show = function(){
   );
   pop();
   push();
-  fill(255, 0, 0);
+  var colorR = map(this.crankAngle, 50, 100, 0, 255, true);
+  fill(colorR, 0, 0);
   ellipseMode(RADIUS);
   ellipse(0, ballH, ballR);
   pop();
   pop();
 }
 
-lever.prototype.grab = function(){
+lever.prototype.mousePressed = function(){
+  if(this.pullable){
+    var x = this.x + 0.5 * width;
+    var y = this.y + 0.5 * height;
+    if( abs(y + this.minBallH - mouseY)**2 + abs(x - mouseX)**2 <= this.minBallR ** 2 ||(
+        abs(x - mouseX) <= 0.5 * this.minBallR &&
+        abs(y + 0.5 * this.minBallH - mouseY) <= abs(0.5 * this.minBallH))){
+      this.grabbed = true;
+      this.minGrabY = mouseY;
+      this.maxGrabY = 2 * y - this.minGrabY + 1;
+    }
+    loop();
+  }
 
+}
+lever.prototype.mouseDragged = function(){
+  if(this.grabbed){
+    this.crankAngle = map(mouseY, this.minGrabY, this.maxGrabY, 0, 100, true);
+  }
+}
+lever.prototype.mouseReleased = function(){
+  if(this.grabbed){
+    this.grabbed = false;
+    this.pullable = false;
+    this.dCrank = this.retractSpeed;
+    if(this.crankAngle >= 50){
+      this.pulled = true;
+      this.weakPull = false;
+    }
+    else{
+      this.weakPull = true;
+    }
+  }
 }
 
 mousePressed = function(){
-  // if((mouseX - 0.5 * width - 120) ** 2 + (mouseY - 0.5 * height - 270)**2 <= 125 ** 2){
-  //   slotMachine.spinReels();
-  // }
-  // slotMachine.mousePressed();
+  slotMachine.mousePressed();
   // loop();
 }
 
 mouseReleased = function(){
-  // slotMachine.mouseReleased();
-  // noLoop();
+  slotMachine.mouseReleased();
+}
+
+mouseDragged = function(){
+  slotMachine.mouseDragged();
 }

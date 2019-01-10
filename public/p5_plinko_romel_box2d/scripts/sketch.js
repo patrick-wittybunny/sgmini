@@ -115,7 +115,7 @@ function draw() {
     //     balls.push(ball);
     // }
 
-    let timeStep = 1.0 / 30;
+    let timeStep = 1.0 / frameRate();
     // 2nd and 3rd arguments are velocity and position iterations
     world.Step(timeStep, 10, 10);
 

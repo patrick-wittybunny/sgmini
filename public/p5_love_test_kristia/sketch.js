@@ -13,83 +13,103 @@ var rectPos = 900;
 var submitted = false;
 var percent = 0;
 var percentResult = 0;
+var resultString;
+
+var strArr = [
+  ['Not in this lifetime!', 'You’re making a mistake!'],
+  ['You’re better off as friends.'],
+  ['There’s someone better out there for you.'],
+  ['Your destiny is with someone else.'],
+  ['Maybe you can give each other a chance!'],
+  ['It might work out but, then again, it might not!'],
+  ['You’re compatible, but it’s not going to be easy.'],
+  ['What a lovely couple you both make!'],
+  ['No couple is perfect, but you come very close!'],
+  ['Your love is meant to be!', 'You are the perfect couple!']
+]
 
 function preload () {
-  img = loadImage("assets/bg.png");  // Load the image
-  img2 = loadImage("assets/heart.png");  // Load the image
-  img3 = loadImage("assets/heartbg.png");  // Load the image
-  mask2 = loadImage("assets/startBtn.png");  // Load the image
+    img = loadImage("assets/bg.png");  // Load the image
+    img2 = loadImage("assets/heart.png");  // Load the image
+    img3 = loadImage("assets/heartbg.png");  // Load the image
+    mask2 = loadImage("assets/startBtn.png");  // Load the image
 
+    successSound = loadSound('assets/success.mp3');
+    failSound = loadSound('assets/fail.mp3');
 
-
-  successSound = loadSound('assets/success.mp3');
-  failSound = loadSound('assets/fail.mp3');
+    //font = loadFont('assets/SourceSansPro-Regular.otf');
 }
 
 function setup() {
-  createCanvas(600, 900);
+    createCanvas(600, 900);
 
-  inp = createInput('');
-  inp.position(width * 0.02, height * 0.28);
-  inp.input(myInputEvent);
-  inp.mousePressed(clearInput1);
+    inp = createInput('');
+    inp.position(width * 0.02, height * 0.28);
+    inp.input(myInputEvent);
+    inp.mousePressed(clearInput1);
 
-  inp2 = createInput('');
-  inp2.position(width * 0.535, height * 0.28);
-  inp2.input(myInputEvent);
-  inp2.mousePressed(clearInput2);
+    inp2 = createInput('');
+    inp2.position(width * 0.535, height * 0.28);
+    inp2.input(myInputEvent);
+    inp2.mousePressed(clearInput2);
 
+    inp.size(260, 40);
+    inp2.size(260, 40);
 
-  inp.size(260, 40);
-  inp2.size(260, 40);
+    inp.style('font-size', '40px');
+    inp2.style('font-size', '40px');
+    console.log(inp);
 
-  inp.style('font-size', '40px');
-  inp2.style('font-size', '40px');
-  console.log(inp);
-
-  textAlign(CENTER, CENTER);
-  textSize(50);
+    textAlign(CENTER, CENTER);
+    textSize(50);
 }
 
 function customEvent() {
-  console.log("adasdasasd");
+    console.log("adasdasasd");
 }
 
 function draw() {
 
-  background(img);
+    background(img);
 
 
-  image(img3, width/6, height * 0.9 - img3.height );
-  image(mask2, width/2 - mask2.width/2, height*0.4 - mask2.height/2);
+    image(img3, width/6, height * 0.9 - img3.height );
+    image(mask2, width/2 - mask2.width/2, height*0.4 - mask2.height/2);
 
-  if (submitted && frameCount % 60 == 0 && timer > 0) { // if the frameCount is divisible by 60, then a second has passed. it will stop at 0
+    if (submitted && frameCount % 60 == 0 && timer > 0) { // if the frameCount is divisible by 60, then a second has passed. it will stop at 0
     	timer--;
-  }
-  else if(submitted && timer > 0){
-    text("Calculating...", width * 0.47, height * 0.7);
+    }
+    else if(submitted && timer > 0){
+        text("Calculating...", width * 0.47, height * 0.7);
 
-  }
-  if (timer == 0) {
-    drawHeart();
+    }
+    if (timer == 0) {
+        drawHeart();
 
-    if(submitted && rectPos != 0 && percentResult != 0){
-        rectPos -= height/100; 
-        percentResult--;
-        percent++;
+        if(submitted && rectPos != 0 && percentResult != 0){
+            rectPos -= height/100; 
+            percentResult--;
+            percent++;
+
+            if(percentResult == 0){
+                if(percent > 60){
+                    successSound.play();
+                }
+                else{
+                    failSound.play();
+                }
+            } 	
+        }
+        
+        textSize(50);
+        text(percent + "%", width * 0.47, height * 0.7);
 
         if(percentResult == 0){
-            if(percent > 60){
-                successSound.play();
-            }
-            else{
-                failSound.play();
-            }
-        } 	
-    }
+            textSize(20);
+            text(resultString, width * 0.5 - 150, height * 0.83, 300, 200);
+        }
 
-    text(percent + "%", width * 0.47, height * 0.7);
-  }
+    }
 
 }
 
@@ -100,20 +120,20 @@ function mousePressed() {
     var x2 = width/2 + mask2.width/2;
     var y2 = height*0.4 + mask2.height/2;
 
-  if(mouseX > x1 && mouseX < x2 && mouseY > y1 && mouseY < y2){
-    submitNames();
-  }
+    if(mouseX > x1 && mouseX < x2 && mouseY > y1 && mouseY < y2){
+        submitNames();
+    }
 
 }
 
 function drawHeart(){
 
-  if(percent != 0){
-    var img2Y = img2.height * (100 - percent) / 100;
-    var img2Height = img2.height * percent / 100;
+    if(percent != 0){
+        var img2Y = img2.height * (100 - percent) / 100;
+        var img2Height = img2.height * percent / 100;
 
-    image(img2.get(0, img2Y, img2.width, img2Height), width/6, height * 0.9 - img2Height);    
-  }
+        image(img2.get(0, img2Y, img2.width, img2Height), width/6, height * 0.9 - img2Height);    
+    }
 
 }
 
@@ -145,6 +165,8 @@ function submitNames() {
       timer = 3;
 
       percentResult = Math.floor(Math.random()  * 100);
+
+      resultString = getResultStr();
   }
   else {
         if(!inp.value()){
@@ -158,3 +180,15 @@ function submitNames() {
   }
 
 }
+
+function getResultStr() {
+    var num = Math.floor(percentResult / 10);
+    var num2 = Math.floor(Math.random() * strArr[num].length);
+    console.log("gettttt");
+    return strArr[num][num2];
+}
+
+
+// function windowResized() {
+//   resizeCanvas(windowWidth, windowHeight);
+// }

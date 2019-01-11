@@ -1,7 +1,7 @@
 var radius = 200;
 var bg;
 var title;
-var texture_8ball;
+var ball;
 var alpha = 0;
 var beta = 0;
 var gamma = 0;
@@ -9,9 +9,10 @@ var isTurned = false;
 var pRotationXY = 0;
 var theta = {};
 var dTheta = 0;
-var triangleScale = 0;
+var answer = [];
+var answerScale = 0;
 var lightScale = 0;
-var triangleRotation = 0;
+var answerRotation = 0;
 var turnCount = 0;
 var button;
 var pseudoShakeStatus = 0;
@@ -22,12 +23,15 @@ var targetPseudoAccY = 0;
 var dPseudoAccX = 0;
 var dPseudoAccY = 0;
 var center = {};
-var answerLength = 20;
+var answerTexture;
 
 function preload() {
     bg = loadImage("assets/bg.jpg");
+    for (var i = 0; i < 20; i++) {
+        answer.push(loadImage("assets/answer"+i+".png"));
+    }
     title = loadImage("assets/title.png");
-    texture_8ball = loadImage("assets/8ball.jpg");
+    ball = loadImage("assets/ball.jpg");
 }
 
 function setup() {
@@ -119,19 +123,19 @@ function draw(){
         }
         // rotateZ(-0.1 * beta);
         // rotateY(-0.1 * gamma);
-        texture(texture_8ball);
+        texture(ball);
         sphere(radius);
     pop();
 
     if (isTurned && Math.abs(theta.x - PI) <= Math.abs(dTheta.x)) {
         push();
             translate(0, 0, 2 * radius);
-            rotateZ(triangleRotation);
+            rotateZ(answerRotation);
             fill(123, 12, 42, 128);
-            texture(triangle);
-            plane(108 * triangleScale, 94 * triangleScale);
-            if (triangleScale < 1) {
-                triangleScale += 1/28;
+            texture(answerTexture);
+            plane(108 * answerScale, 94 * answerScale);
+            if (answerScale < 1) {
+                answerScale += 1/28;
                 lightScale += 1/28;
                 // dRotation +=
             }
@@ -165,9 +169,9 @@ function deviceTurned() {
   if (turnAxis === 'X' || turnAxis === undefined) {
       ++turnCount;
       if (turnCount >= 2 || turnAxis === undefined) {
-          triangle = loadImage("assets/triangle"+((Math.random() * answerLength) | 0)+".png");
-          triangleRotation = -0.11 * HALF_PI + Math.random() * 0.22 * HALF_PI;
-          triangleScale = 0;
+          answerTexture = answer[((Math.random() * answer.length) | 0)];
+          answerRotation = -0.11 * HALF_PI + Math.random() * 0.22 * HALF_PI;
+          answerScale = 0;
           if (isTurned) {
               theta.x = PI;
           }

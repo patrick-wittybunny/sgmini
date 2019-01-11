@@ -3,11 +3,11 @@ var images = [];
 var slotMachine;
 
 function preload() {
-  images.im1 = loadImage('assets/jigglypuff.png');
-  images.im2 = loadImage('assets/jolteon.png');
-  images.im3 = loadImage('assets/piplup.png');
-  images.im4 = loadImage('assets/vulpix.png');
-  images.im5 = loadImage('assets/7.png');
+  // images.im1 = loadImage('assets/jigglypuff.png');
+  // images.im2 = loadImage('assets/jolteon.png');
+  // images.im3 = loadImage('assets/piplup.png');
+  // images.im4 = loadImage('assets/vulpix.png');
+  // images.im5 = loadImage('assets/7.png');
 
   images.button = loadImage('assets/button.png');
 }
@@ -180,13 +180,23 @@ function reel(direction){
   this.faceHeight = 100;
   this.maxVisibleFaces = 3;
 
-  this.faces = [0, 1, 2, 3, 4, 5, 99];
-
+  this.faces = [-5, -1, 0, 1, 24, 7, 25, 3, 99];
+  this.faceWeights = [2, 1, 2, 4, 4, 4, 4, 4, 1];
   this.topFace = floor(random(this.faces.length));
+  this.faceValue = this.faces[(this.topFace + 1)%this.faces.length];
 
-  this.value = null;
-  this.minVal = 0;
-  this.maxVal = 0;
+  this.faceWeights.push(this.faceWeights.shift())
+  var faceValSum = this.faceWeights.reduce(
+    function(t, n){
+      return t + n;
+    });
+  var cumVal = 0;
+
+  for(i = 0; i < this.faceWeights.length; i++){
+    this.faceWeights[i] = cumVal + this.faceWeights[i]/faceValSum;
+    cumVal = this.faceWeights[i];
+  }
+  this.faceWeights[this.faceWeights.length - 1] = 1;
 }
 reel.prototype.update = function(){
   if(this.spinning){
@@ -201,6 +211,14 @@ reel.prototype.update = function(){
     this.spinV = this.spinV + this.spinA;
     if(millis() >= this.stopAt){
       this.spinning = false;
+      var myVal = random();
+      for(i = 0; i < this.faceWeights.length; i++){
+        if(myVal <= this.faceWeights[i]){
+          this.topFace = i;
+          this.faceValue = this.faces[(this.topFace + 1)%this.faces.length];
+          break;
+        }
+      }
     }
   }
   else{
@@ -320,6 +338,7 @@ lever.prototype.show = function(){
   var ballH = map(this.crankAngle, 0, 100, this.minBallH, this.maxBallH);
   stroke(0);
   strokeWeight(1);
+
   push();
   quad(
     -0.5 * this.minBallR, 0, 
@@ -328,10 +347,29 @@ lever.prototype.show = function(){
     0.5 * this.minBallR, 0
   );
   pop();
+
+  // push();
+  // noFill();
+  // ellipseMode(RADIUS);
+  // ellipse()
+  // pop();
+
   push();
+  ellipseMode(RADIUS);
+  if(this.crankAngle >= 50){
+    push();
+    noFill();
+    translate(0, ballH);
+    rotate(0.1 * frameCount);
+    ellipse(0, 0, ballR * 1.2, ballR * 1.6);
+    if(this.crankAngle >= 98){
+      rotate(PI/2);
+      ellipse(0, 0, ballR * 1.2, ballR * 1.6);
+    }
+    pop();
+  }
   var colorR = map(this.crankAngle, 50, 100, 0, 255, true);
   fill(colorR, 0, 0);
-  ellipseMode(RADIUS);
   ellipse(0, ballH, ballR);
   pop();
   pop();

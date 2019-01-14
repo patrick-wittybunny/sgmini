@@ -379,7 +379,8 @@ lever.prototype.mousePressed = function(){
   if(this.pullable){
     var x = this.x + 0.5 * width;
     var y = this.y + 0.5 * height;
-    if( abs(y + this.minBallH - mouseY)**2 + abs(x - mouseX)**2 <= this.minBallR ** 2 ||(
+  
+    if( pow(y + this.minBallH - mouseY, 2) + pow(x - mouseX, 2) <= pow(this.minBallR, 2) ||(
         abs(x - mouseX) <= 0.5 * this.minBallR &&
         abs(y + 0.5 * this.minBallH - mouseY) <= abs(0.5 * this.minBallH))){
       this.grabbed = true;
@@ -412,7 +413,6 @@ lever.prototype.mouseReleased = function(){
 
 mousePressed = function(){
   slotMachine.mousePressed();
-  // loop();
 }
 
 mouseReleased = function(){
@@ -422,3 +422,4 @@ mouseReleased = function(){
 mouseDragged = function(){
   slotMachine.mouseDragged();
 }
+

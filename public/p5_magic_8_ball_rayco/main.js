@@ -2,33 +2,27 @@ var radius = 200;
 var bg;
 var title;
 var ball;
-var alpha = 0;
-var beta = 0;
-var gamma = 0;
 var isTurned = false;
 var pRotationXY = 0;
 var theta = {};
 var dTheta = 0;
 var answer = [];
 var answerScale = 0;
-var lightScale = 0;
 var answerRotation = 0;
 var turnCount = 0;
-var button;
-var pseudoShakeStatus = 0;
-var pseudoAccX = 0;
-var pseudoAccY = 0;
-var targetPseudoAccX = 0;
-var targetPseudoAccY = 0;
-var dPseudoAccX = 0;
-var dPseudoAccY = 0;
+var shakeButton;
+var turnButton;
+var pseudoAcc = {status: 0, x: 0, y: 0, targetX: 0, targetY: 0, dx: 0, dy: 0};
 var center = {};
 var answerTexture;
+var input;
+var title_plane;
+var newAccelerationX, newAccelerationY;
 
 function preload() {
     bg = loadImage("assets/bg.jpg");
     for (var i = 0; i < 20; i++) {
-        answer.push(loadImage("assets/answer"+i+".png"));
+        answer.push(loadImage("assets/answer"+i+".jpg"));
     }
     title = loadImage("assets/title.png");
     ball = loadImage("assets/ball.jpg");
@@ -37,19 +31,27 @@ function preload() {
 function setup() {
     createCanvas(600, 900, WEBGL);
     mouseRate = HALF_PI / radius;
-    // setShakeThreshold(30);
 
-    button = createButton('SHAKE');
-    button.position(0.5 * width - 100 - 25, 0.85 * height);
-    button.mousePressed(pseudoShake);
+    input = createInput();
+    input.style('font-size', '24px');
+    input.position(0.5 * width - 200, 0.8 * height);
+    input.elt.maxLength = 36;
+    input.elt.placeholder = "Ask a question...";
+    input.elt.style.textAlign = "center";
+    // input.elt.style = "text-align: center";
 
-    button = createButton('TURN OVER');
-    button.position(0.5 * width + 0 + 25, 0.85 * height);
-    button.mousePressed(deviceTurned);
+    shakeButton = createButton('SHAKE');
+    shakeButton.position(0.5 * width - 100 - 25, 0.9 * height);
+    shakeButton.mousePressed(pseudoShake);
+
+    turnButton = createButton('TURN OVER');
+    turnButton.position(0.5 * width + 0 + 25, 0.9 * height);
+    turnButton.mousePressed(deviceTurned);
 }
 
 function draw(){
     clear();
+    background(128);
 
     //background
     push();
@@ -59,41 +61,46 @@ function draw(){
 
     //title
     push();
-        translate(0, -0.35 * height, 0);
+        translate(createVector(0, -0.35 * height, 0));
+        // translate(0, -0.35 * height, 0);
         texture(title);
-        plane(540, 207);
+        title_plane = plane(577, 144);
+        // console.log(title_plane);
     pop();
 
     //ball
     push();
         if (!isTurned) {
-            if (!mouseIsPressed && pseudoShakeStatus == 0) {
+            // console.log(0);
+            if (!mouseIsPressed && pseudoAcc.status == 0) {
                 //device is shaken
-                theta = {x: accelerationY * 0.03, y: -HALF_PI + accelerationX * 0.03}
+                newAccelerationX = 2.074434e-16 + 0.3333333 * accelerationX - 1.037217e-18 * Math.pow(accelerationX, 2) + 0.001666667 * Math.pow(accelerationX, 3);
+                newAccelerationY = 2.074434e-16 + 0.3333333 * accelerationY - 1.037217e-18 * Math.pow(accelerationY, 2) + 0.001666667 * Math.pow(accelerationY, 3);
+                theta = {x: newAccelerationY * 0.03, y: -HALF_PI + newAccelerationX * 0.03}
             }
-            else if (pseudoShakeStatus != 0) {
+            else if (pseudoAcc.status != 0) {
                 //shake button is pressed
-                theta = {x: pseudoAccY * 0.03, y: -HALF_PI + pseudoAccX * 0.03}
-                if (pseudoShakeStatus == 1 && Math.abs(pseudoAccX - targetPseudoAccX) > Math.abs(dPseudoAccX)) {
-                    pseudoAccX += dPseudoAccX;
-                    pseudoAccY += dPseudoAccY;
+                theta = {x: pseudoAcc.y * 0.03, y: -HALF_PI + pseudoAcc.x * 0.03}
+                if (pseudoAcc.status == 1 && Math.abs(pseudoAcc.x - pseudoAcc.targetX) > Math.abs(pseudoAcc.dx)) {
+                    pseudoAcc.x += pseudoAcc.dx;
+                    pseudoAcc.y += pseudoAcc.dy;
                 }
-                else if (pseudoShakeStatus != 0){
-                    if (pseudoShakeStatus == 1) {
-                        pseudoShakeStatus = -1;
-                        dPseudoAccX = (-pseudoAccX) / 8;
-                        dPseudoAccY = (-pseudoAccY) / 8;
+                else if (pseudoAcc.status != 0){
+                    if (pseudoAcc.status == 1) {
+                        pseudoAcc.status = -1;
+                        pseudoAcc.dx = (-pseudoAcc.x) / 8;
+                        pseudoAcc.dy = (-pseudoAcc.y) / 8;
                     }
-                    pseudoAccX += dPseudoAccX;
-                    pseudoAccY += dPseudoAccY;
-                    if (Math.abs(pseudoAccX) < Math.abs(dPseudoAccX)) {
-                        pseudoShakeStatus = 0;
-                        pseudoAccX = 0;
-                        pseudoAccY = 0;
+                    pseudoAcc.x += pseudoAcc.dx;
+                    pseudoAcc.y += pseudoAcc.dy;
+                    if (Math.abs(pseudoAcc.x) < Math.abs(pseudoAcc.dx)) {
+                        pseudoAcc.status = 0;
+                        pseudoAcc.x = 0;
+                        pseudoAcc.y = 0;
                     }
                 }
             }
-            else {//if (Math.abs(mouseY - 0.5 * height) < 0.35 * height) {
+            else {
                 //mouse is dragged
                 theta = {x: -(mouseY - center.y) * mouseRate, y: -HALF_PI + (mouseX - center.x) * mouseRate};
                 let mouseDrag = {sum: theta.x + theta.y + HALF_PI, absSum: Math.abs(theta.x) + Math.abs(theta.y + HALF_PI)};
@@ -101,15 +108,11 @@ function draw(){
                     pRotationXY = mouseDrag.sum < 0 ? -1 : 1;
                 }
             }
-            // else {
-            //     // ball is resting
-            //     // theta = {x: 0, y: -HALF_PI}
-            //     // console.log(dist(mouseX, mouseY, 0, 0), radius);
-            // }
             rotateX(theta.x);
             rotateY(theta.y);
         }
-        else if (Math.abs(theta.x - PI) > Math.abs(dTheta.x)){
+        else if ((Math.abs(theta.x - PI) > Math.abs(dTheta.x) && turnCount == -2) || (Math.abs(theta.x) > Math.abs(dTheta.x) && turnCount == 0)){
+            // console.log(1);
             // ball is turning over
             rotateX(theta.x);
             rotateY(theta.y);
@@ -118,75 +121,79 @@ function draw(){
         }
         else {
             // ball has been turned over
-            rotateX(PI);
+            // console.log(2, Math.floor(0.5 * turnCount));
+            rotateX(-2 * PI - 3 * Math.floor(0.5 * turnCount) * PI);
             rotateY(-HALF_PI);
         }
-        // rotateZ(-0.1 * beta);
-        // rotateY(-0.1 * gamma);
         texture(ball);
-        sphere(radius);
+        sphere(radius, 24, 24);
     pop();
 
     if (isTurned && Math.abs(theta.x - PI) <= Math.abs(dTheta.x)) {
         push();
-            translate(0, 0, 2 * radius);
+            translate(0, 0, radius);
             rotateZ(answerRotation);
             fill(123, 12, 42, 128);
             texture(answerTexture);
-            plane(108 * answerScale, 94 * answerScale);
+            plane(115 * answerScale, 115 * answerScale);
             if (answerScale < 1) {
-                answerScale += 1/28;
-                lightScale += 1/28;
-                // dRotation +=
+                answerScale += 1/15;
             }
         pop();
     }
+    pointLight(255, 255, 255, 0, 0, 550);
+    pointLight(255, 255, 255, 0, 0, 550);
+    pointLight(255, 255, 255, 0, 0, 550);
+    pointLight(255, 255, 255, 0, 0, 550);
 
-    //lighting
-    // ambientLight(222);
-    // pointLight(255, 255, 255, 0, 0, (2 + 8 * lightScale) * radius);
-    // pointLight(255, 255, 255, 0, 0, (2 + 8 * lightScale) * radius);
-    // pointLight(255, 255, 255, 0, 0, (2 + 8 * lightScale) * radius);
-    // pointLight(255, 255, 255, 0, 0, (2 + 8 * lightScale) * radius);
+    // ambientLight(196, 196, 196);
+    // pointLight(255, 255, 255, mouseX - height / 2, mouseY - width / 2, 3 * radius);
+    // pointLight(255, 255, 255, mouseX - height / 2, mouseY - width / 2, 3 * radius);
+    // pointLight(255, 255, 255, mouseX - height / 2, mouseY - width / 2, 3 * radius);
+    // pointLight(255, 255, 255, mouseX - height / 2, mouseY - width / 2, 3 * radius);
 }
 
 function pseudoShake(){
-    if (pseudoAccX == 0) {
-        targetPseudoAccX = -60 + 2*60 * Math.random();
-        targetPseudoAccY = -60 + 2*60 * Math.random();
+    if (pseudoAcc.x == 0) {
+        pseudoAcc.targetX = -60 + 2*60 * Math.random();
+        pseudoAcc.targetY = -60 + 2*60 * Math.random();
     }
     else {
-        targetPseudoAccX = -targetPseudoAccX - 0.5*60 + 2*0.5*60 * Math.random();
-        targetPseudoAccY = -targetPseudoAccY - 0.5*60 + 2*0.5*60 * Math.random();
+        pseudoAcc.targetX = -pseudoAcc.targetX - 0.5*60 + 2*0.5*60 * Math.random();
+        pseudoAcc.targetY = -pseudoAcc.targetY - 0.5*60 + 2*0.5*60 * Math.random();
     }
-    dPseudoAccX = (targetPseudoAccX - pseudoAccX) / 8;
-    dPseudoAccY = (targetPseudoAccY - pseudoAccY) / 8;
-    pseudoShakeStatus = 1;
+    pseudoAcc.dx = (pseudoAcc.targetX - pseudoAcc.x) / 8;
+    pseudoAcc.dy = (pseudoAcc.targetY - pseudoAcc.y) / 8;
+    pseudoAcc.status = 1;
     isTurned = false;
 }
 
 function deviceTurned() {
   if (turnAxis === 'X' || turnAxis === undefined) {
       ++turnCount;
-      if (turnCount >= 2 || turnAxis === undefined) {
+      if (turnAxis === undefined) {
+          ++turnCount;
+      }
+      if (turnCount >= 2 && Math.abs(theta.x - PI) > PI / 30) {
           answerTexture = answer[((Math.random() * answer.length) | 0)];
           answerRotation = -0.11 * HALF_PI + Math.random() * 0.22 * HALF_PI;
           answerScale = 0;
           if (isTurned) {
-              theta.x = PI;
+              theta.x = 0;
           }
-          dTheta = {x: (PI - theta.x)/60, y: (-HALF_PI - theta.y)/60};
+          dTheta = {x: (PI - theta.x)/30, y: (-HALF_PI - theta.y)/30};
           isTurned = true;
+          turnCount = -2;
+      }
+      else if (turnCount >= 0 && turnCount < 2 && Math.abs(theta.x) > PI / 30) {
+          answerScale = 0;
+          dTheta = {x: -theta.x/30, y: (-HALF_PI - theta.y)/30};
+          isTurned = true;
+          turnCount = 0;
       }
   }
 }
 
-function mousePressed(e) {
+function mousePressed() {
     center = {x: mouseX, y: mouseY};
 }
-// // accelerometer data
-// window.addEventListener('deviceorientation', function(e) {
-//   alpha = isFinite(e.alpha) ? e.alpha : 0;
-//   beta = isFinite(e.beta) ? e.beta : 0;
-//   gamma = isFinite(e.gamma) ? e.gamma : 0;
-// });

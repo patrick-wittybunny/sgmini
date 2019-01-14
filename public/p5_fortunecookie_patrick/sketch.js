@@ -12,6 +12,10 @@ let cookie_gif = null;
 
 let bg = null;
 let cookie = null;
+
+let text_font = null;
+
+
 function preload() {
     content = loadJSON('content.json');
     btn_1_default = loadImage('assets/open_cookie.png');
@@ -24,20 +28,16 @@ function preload() {
     
     cookie_gif = new Gif('assets/cookie_animation');
     cookie_gif.preload(5);
+
+    text_font = loadFont('assets/Young.ttf');
 }
 
 function setup() {
     createCanvas(600, 900);
-    // console.log(content);
     content = content.fortunes[`${0}`];
-
-    // createCanvas(min_width(window.innerWidth), min_height(window.innerHeight));
-    // createCanvas(windowWidth,windowHeight);
-    // cookie_gif = loadGif('assets/fortunecookie_animated.gif');\
     cookie_gif.ready = true;
     cookie_gif.x = width/2;
     cookie_gif.y = height / 2 + 50;
-    // cookie_gif.play(12, false);
 
     cookie = new Cookie(width / 2, height / 2 + 50, cookie_uncracked, cookie_cracked, cookie_gif);
     let self = this;
@@ -50,13 +50,16 @@ function setup() {
     }, this);
 
     btn_2 = new Button(width / 2, cookie.y + 250, btn_2_default, btn_2_pressed, function () {
-        console.log('here');
-        cookie.reset();
-        btn_1.hide = false;
-        btn_2.hide = true;
-        btn_1.reset();
+        setTimeout(function() {
+            cookie.reset();
+            btn_1.hide = false;
+            btn_2.hide = true;
+            btn_1.reset();
+        }, 200);
     }, this);
     btn_2.hide = true;
+
+    textFont(text_font);
     // cookie_gif2 = createImg('assets/fortunecookie_animated.gif');
 }
 

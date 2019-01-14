@@ -18,42 +18,23 @@ function Cookie(x,y, frame0, frame1, gif) {
             rectMode(CENTER,TOP);
             textAlign(CENTER, CENTER);
             // textStyle('Arial Narrow')
-            textFont('Arial Narrow Regular');
+            // textFont('Arial Narrow');
             textSize(20);
             fill(0, 0, 0);
-            text(this.text, 0, -10, 275, this.frame1.height);
+            text(this.text, 0, -10, 255, this.frame1.height);
             pop();
         }
         if(!this.cracking && this.cracked) {
-            // console.log('heree');
             if(!this.text) {
-                // console.log('here');
                 this.text = content[floor(random(content.length))];
-                console.log(this.text);
-            
             }
-            //     console.log(this.text);
-            // }
         }
-        // push();
-        // translate(this.x, this.y);
-        // imageMode(CENTER);
-        // if(!this.cracking) {
-
-            // if(this.cracked) {
-                // image(gif, 0,0);
-            // }
-            // else {
-                // image(gif, 0, 0);
-            // }
-        // }
-        // pop();
     }
 
     this.crack = function(callback,context) {
         this.cracking = true;
         let self = this;
-        this.gif.play(18, false, function() {
+        this.gif.play(20, false, function() {
             self.cracking = false;
             if(callback) {
                 callback.bind(context);

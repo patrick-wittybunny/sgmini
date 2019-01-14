@@ -14,7 +14,6 @@ function Gif(frame_url){
         this.frame_count = frame_count;
         for(let i = 0; i < frame_count; i++){
             const img = loadImage(`${this.frame_url}/${i}.png`);
-            // console.log(img);
             this.frames.push(loadImage(`${this.frame_url}/${i}.png`));
         }
     }

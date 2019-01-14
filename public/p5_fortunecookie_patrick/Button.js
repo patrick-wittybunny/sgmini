@@ -29,21 +29,10 @@ function Button(x, y, frame0, frame1, callback, context) {
     }
 
     this.checkPressed = function() {
-        console.log(mouseX, mouseY);
-        
         if(mouseX >= this.x - this.frame0.width/2 && mouseX <= this.x + this.frame0.width/2 &&
         mouseY >= this.y - this.frame0.height / 2 && mouseY <= this.y + this.frame0.height / 2){
-
-            // this.pressed = true;
             this.changePressedState();
-            // console.log(';here');
         }
-                // console.log(this.image.width);
-                // console.log(this.image.height);
-
-        // if(!this.pressed) {
-            // this.pressed = true;
-        // }
     }
 
     this.reset = function() {

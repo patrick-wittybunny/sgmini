@@ -1,3 +1,4 @@
+import { throws } from "assert";
 
 function Gif(frame_url){
     this.x = 0;
@@ -30,9 +31,7 @@ function Gif(frame_url){
         callback.bind(context);
         fps = Math.min(fps, 60);
         let self = this;
-        if(this.interval) {
-            clearInterval(this.interval);
-        }
+        this.stop();
         this.interval = setInterval(function() {
             self.currentFrame++;
             if(self.currentFrame >= self.frame_count) {
@@ -40,15 +39,29 @@ function Gif(frame_url){
                 else {
                     self.currentFrame = self.frame_count - 1;
                     clearInterval(self.interval);
-                    callback();
                 }
+                callback();
             }
-
         }, 1000/fps);
     }
 
     this.reset = function() {
         this.currentFrame = 0;
+        this.stop();
     }
 
+    this.setXY = function(x,y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    this.stop = function(){
+        if (this.interval) {
+            clearInterval(this.interval);
+        }
+    }
+
+    this.setFrame = function (frame_number) {
+        this.currentFrame = Math.min(frame_number, this.frame_count);
+    }
 }
